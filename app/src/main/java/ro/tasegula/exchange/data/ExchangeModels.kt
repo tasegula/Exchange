@@ -2,14 +2,12 @@ package ro.tasegula.exchange.data
 
 import com.google.gson.annotations.SerializedName
 
-data class ExchangeRate(
-    @SerializedName("base")
-    val base: String,
-    @SerializedName("date")
-    val date: String,
-    @SerializedName("rates")
-    val rates: Map<String, Double>
-)
+data class ExchangeRate(@SerializedName("base")
+                        val base: String,
+                        @SerializedName("date")
+                        val date: String,
+                        @SerializedName("rates")
+                        val rates: Map<String, Double>)
 
 enum class Currency {
     EUR,

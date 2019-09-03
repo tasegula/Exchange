@@ -2,8 +2,12 @@ package ro.tasegula.exchange.data
 
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class ExchangeRepository(private val webService: ExchangeWebService) {
+@Singleton
+class ExchangeRepository
+@Inject constructor(private val webService: ExchangeWebService) {
 
     /**
      * *Scheduler:*
@@ -12,6 +16,6 @@ class ExchangeRepository(private val webService: ExchangeWebService) {
      * @return the list of exchange rates for the given currency
      */
     fun getRates(currency: Currency): Single<ExchangeRate> =
-        webService.getRates(currency).subscribeOn(Schedulers.io())
+            webService.getRates(currency).subscribeOn(Schedulers.io())
 
 }

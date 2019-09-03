@@ -7,18 +7,22 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class ExchangeWebService {
+@Singleton
+class ExchangeWebService
+@Inject constructor() {
 
     private val api: Api
 
     init {
         api = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create(Gson()))
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .build()
-            .create(Api::class.java)
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create(Gson()))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build()
+                .create(Api::class.java)
     }
 
     fun getRates(currency: Currency): Single<ExchangeRate> = api.getRates(currency.name)

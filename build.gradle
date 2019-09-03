@@ -1,0 +1,49 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    apply from: "$rootDir/dependencies.gradle"
+
+    repositories {
+        google()
+        jcenter()
+    }
+
+    dependencies {
+        classpath "com.android.tools.build:gradle:$androidPluginVersion"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    apply from: "$rootDir/dependencies.gradle"
+
+    repositories {
+        google()
+        jcenter()
+    }
+
+    // Javac will print a maximum of 100 compilation errors, and when dealing with preprocessors you
+    // often want the last error message, not the first.
+    afterEvaluate {
+        if (project.plugins.hasPlugin("kotlin-kapt")) {
+            kapt {
+                javacOptions {
+                    option("-Xmaxerrs", 5000)
+                    option("-Xmaxwarns", 5000)
+                }
+            }
+        }
+    }
+
+    project.ext {
+        androidMinVersion = 19
+        androidTargetVersion = 28
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

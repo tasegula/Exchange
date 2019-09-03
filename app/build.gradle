@@ -1,0 +1,72 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion androidTargetSdkVersion
+    defaultConfig {
+        applicationId "ro.tasegula.exchange"
+        minSdkVersion androidMinSdkVersion
+        targetSdkVersion androidTargetSdkVersion
+
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+
+dependencies {
+    implementation kotlin_stdlib
+
+    // Android
+    implementation androidx.appcompat
+    implementation androidx.constraintlayout
+
+    // Google
+    implementation google.design
+
+    // dagger
+    implementation dagger.core
+    implementation dagger.android
+    implementation dagger.androidSupport
+    kapt dagger.compiler
+    kapt dagger.processor
+
+    // RX
+    implementation rx.java
+    implementation rx.android
+    implementation rx.kotlin
+
+    // Retrofit
+    implementation retrofit.core
+    implementation retrofit.rx
+    implementation retrofit.gson
+
+    // GSON
+    implementation gson
+
+    // Debug
+    implementation timber
+
+    // Test - maybe?
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}

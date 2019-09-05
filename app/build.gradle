@@ -39,6 +39,9 @@ dependencies {
     implementation androidx.appcompat
     implementation androidx.constraintlayout
 
+    implementation androidx.arch.core
+    implementation androidx.arch.runtime
+
     // Google
     implementation google.design
 

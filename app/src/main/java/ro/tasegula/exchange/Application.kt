@@ -5,6 +5,7 @@ import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import ro.tasegula.exchange.injection.AppComponent
+import ro.tasegula.exchange.injection.AppModule
 import ro.tasegula.exchange.injection.DaggerAppComponent
 import javax.inject.Inject
 
@@ -18,7 +19,10 @@ class Application : android.app.Application(), HasActivityInjector {
     override fun onCreate() {
         super.onCreate()
 
-        val appComponent: AppComponent = DaggerAppComponent.builder().build()
+        val appComponent: AppComponent =
+                DaggerAppComponent.builder()
+                        .appModule(AppModule(this))
+                        .build()
         appComponent.inject(this)
     }
 }

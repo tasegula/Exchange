@@ -1,3 +1,37 @@
 <resources>
     <string name="app_name">Exchange</string>
+
+    <string name="currency_EUR_description">Euro</string>
+    <string name="currency_AUD_description">Australian Dollar</string>
+    <string name="currency_BGN_description">BGN</string>
+    <string name="currency_BRL_description">BRL</string>
+    <string name="currency_CAD_description">Canadian Dollar</string>
+    <string name="currency_CHF_description">CHF</string>
+    <string name="currency_CNY_description">CNY</string>
+    <string name="currency_CZK_description">CZK</string>
+    <string name="currency_DKK_description">Danish Krona</string>
+    <string name="currency_GBP_description">British Pound</string>
+    <string name="currency_HKD_description">HKD</string>
+    <string name="currency_HRK_description">HRK</string>
+    <string name="currency_HUF_description">HUF</string>
+    <string name="currency_IDR_description">IDR</string>
+    <string name="currency_ILS_description">ILS</string>
+    <string name="currency_INR_description">INR</string>
+    <string name="currency_ISK_description">ISK</string>
+    <string name="currency_JPY_description">JPY</string>
+    <string name="currency_KRW_description">KRW</string>
+    <string name="currency_MXN_description">MXN</string>
+    <string name="currency_MYR_description">MYR</string>
+    <string name="currency_NOK_description">NOK</string>
+    <string name="currency_NZD_description">NZD</string>
+    <string name="currency_PHP_description">PHP</string>
+    <string name="currency_PLN_description">PLN</string>
+    <string name="currency_RON_description">Romanian New Leu</string>
+    <string name="currency_RUB_description">RUB</string>
+    <string name="currency_SEK_description">Swedish Krona</string>
+    <string name="currency_SGD_description">SGD</string>
+    <string name="currency_THB_description">THB</string>
+    <string name="currency_TRY_description">Turkish Lira</string>
+    <string name="currency_USD_description">US Dollar</string>
+    <string name="currency_ZAR_description">ZAR</string>
 </resources>

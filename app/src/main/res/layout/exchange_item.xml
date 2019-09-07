@@ -64,6 +64,6 @@
 
         <variable
             name="viewModel"
-            type="ro.tasegula.exchange.RateItemViewModel" />
+            type="ro.tasegula.exchange.ui.RateItemViewModel" />
     </data>
 </layout>

@@ -24,6 +24,6 @@
 
         <variable
             name="viewModel"
-            type="ro.tasegula.exchange.ExchangeViewModel" />
+            type="ro.tasegula.exchange.ui.ExchangeViewModel" />
     </data>
 </layout>

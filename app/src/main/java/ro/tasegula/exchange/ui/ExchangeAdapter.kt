@@ -1,7 +1,8 @@
-package ro.tasegula.exchange
+package ro.tasegula.exchange.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import ro.tasegula.exchange.BR
 import ro.tasegula.exchange.arch.list.SimpleAdapter
 import ro.tasegula.exchange.databinding.ExchangeItemBinding
 

@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 
-open class ObservableActivity<VM : ObservableViewModel, B : ViewDataBinding> : AppCompatActivity() {
+abstract class ObservableActivity<VM : ObservableViewModel, B : ViewDataBinding> : AppCompatActivity() {
 
     @LayoutRes
     private var bindingLayoutId: Int = 0

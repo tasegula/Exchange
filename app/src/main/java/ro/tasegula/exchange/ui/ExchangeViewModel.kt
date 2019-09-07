@@ -12,12 +12,17 @@ class ExchangeViewModel
 @Inject constructor(private val stringResources: StringResources,
                     repository: ExchangeRepository) : ObservableViewModel() {
 
+    private var baseCurrency: Currency = Currency.EUR
+    private var baseAmount: Double = 1.0
+
+    private var rates: Map<Currency, Double> = mapOf()
+
     init {
-        repository.getRates(Currency.EUR)
+        repository.getRates(baseCurrency)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         {
-                            makeList(it.rates)
+                            makeList(it.rates.plus(Pair(baseCurrency, baseAmount)))
                         },
                         {
                         })
@@ -25,22 +30,43 @@ class ExchangeViewModel
 
     val adapter: ExchangeAdapter = ExchangeAdapter()
 
-    private fun makeList(rates: Map<String, Double>) {
-        val list = rates.map { RateItemViewModel(stringResources, Currency.valueOf(it.key), it.value) }
-        adapter.submitList(list)
+    private fun makeList(map: Map<Currency, Double>) {
+        rates = map
+
+        val list: List<RateItemViewModel> =
+                rates.map { getItemViewModel(it.key, it.value * baseAmount) }
+        adapter.submitList(list.sortedBy { it.currency != baseCurrency })
+    }
+
+    private fun getItemViewModel(currency: Currency, value: Double): RateItemViewModel =
+            RateItemViewModel(stringResources, currency, value, this::update)
+
+    private fun update(currency: Currency, from: Double, to: Double) {
+        baseAmount = baseAmount * to / from
+        baseCurrency = currency
+        makeList(rates)
     }
 }
 
 class RateItemViewModel(stringResources: StringResources,
-                        model: Currency,
-                        rate: Double) : ItemViewModel {
+                        val currency: Currency,
+                        private val rate: Double,
+                        private val update: (currency: Currency, from: Double, to: Double) -> Unit) : ItemViewModel {
 
-    val icon: Int = model.icon
-    val currency: String = model.name
-    val description: String = stringResources.getString(model.description)
-    val amount: String = "%.2f".format(rate)
+    val icon: Int = currency.icon
+    val name: String = currency.name
+    val description: String = stringResources.getString(currency.description)
 
-    override fun isSameItemAs(other: ItemViewModel): Boolean = false
+    var amount: String = "%.2f".format(rate)
+        set(value) {
+            if (field == value) return
+            update(currency, rate, value.toDouble())
+            field = value
+        }
 
-    override fun isSameContentAs(other: ItemViewModel): Boolean = false
+    override fun isSameItemAs(other: ItemViewModel): Boolean =
+            other is RateItemViewModel && this.currency == other.currency
+
+    override fun isSameContentAs(other: ItemViewModel): Boolean =
+            other is RateItemViewModel && this.amount == other.amount
 }

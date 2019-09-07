@@ -10,7 +10,11 @@ data class ExchangeRate(@SerializedName("base")
                         @SerializedName("date")
                         val date: String,
                         @SerializedName("rates")
-                        val rates: Map<String, Double>)
+                        val map: Map<String, Double>) {
+
+    val rates: Map<Currency, Double>
+        get() = map.mapKeys { Currency.valueOf(it.key) }
+}
 
 enum class Currency(@DrawableRes val icon: Int,
                     @StringRes val description: Int) {

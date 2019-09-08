@@ -20,5 +20,11 @@ class AppModule(private val application: Application) {
 
     @Provides
     @Singleton
+    fun provideDatabase(@Named("ApplicationContext") context: Context): ExchangeDatabase {
+        return ExchangeDatabase.build(context)
+    }
+
+    @Provides
+    @Singleton
     fun provideExchangeDao(database: ExchangeDatabase): ExchangeDao = database.exchangeDao
 }

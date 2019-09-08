@@ -8,6 +8,7 @@ import ro.tasegula.exchange.core.arch.list.ItemViewModel
 import ro.tasegula.exchange.data.Currency
 import ro.tasegula.exchange.data.ExchangeRate
 import ro.tasegula.exchange.data.ExchangeRepository
+import ro.tasegula.exchange.utils.neverDispose
 import javax.inject.Inject
 
 class ExchangeViewModel
@@ -19,7 +20,7 @@ class ExchangeViewModel
     private var exchangeCurrency: Currency = Currency.EUR
 
     init {
-        repository.getRates(baseRate.currency)
+        repository.ratesDb()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         {
@@ -28,6 +29,7 @@ class ExchangeViewModel
                         },
                         {
                         })
+            .neverDispose()
     }
 
     val adapter: ExchangeAdapter = ExchangeAdapter()

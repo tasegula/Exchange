@@ -1,4 +1,4 @@
-package ro.tasegula.exchange.injection
+package ro.tasegula.exchange.core.injection
 
 import dagger.Component
 import dagger.android.AndroidInjectionModule

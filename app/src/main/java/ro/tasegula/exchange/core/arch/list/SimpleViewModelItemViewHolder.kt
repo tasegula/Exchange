@@ -1,4 +1,4 @@
-package ro.tasegula.exchange.arch.list
+package ro.tasegula.exchange.core.arch.list
 
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView

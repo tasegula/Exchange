@@ -1,4 +1,4 @@
-package ro.tasegula.exchange.arch
+package ro.tasegula.exchange.core.arch
 
 import androidx.databinding.Observable
 import androidx.databinding.PropertyChangeRegistry

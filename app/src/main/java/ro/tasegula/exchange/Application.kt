@@ -4,9 +4,9 @@ import android.app.Activity
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
-import ro.tasegula.exchange.injection.AppComponent
-import ro.tasegula.exchange.injection.AppModule
-import ro.tasegula.exchange.injection.DaggerAppComponent
+import ro.tasegula.exchange.core.injection.AppComponent
+import ro.tasegula.exchange.core.injection.AppModule
+import ro.tasegula.exchange.core.injection.DaggerAppComponent
 import javax.inject.Inject
 
 class Application : android.app.Application(), HasActivityInjector {

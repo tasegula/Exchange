@@ -1,4 +1,4 @@
-package ro.tasegula.exchange.arch
+package ro.tasegula.exchange.core.arch
 
 import android.os.Bundle
 import androidx.annotation.IdRes

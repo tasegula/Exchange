@@ -1,4 +1,4 @@
-package ro.tasegula.exchange.arch.list
+package ro.tasegula.exchange.core.arch.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
 abstract class SimpleAdapter<IVM : ItemViewModel, B : ViewDataBinding> :
-    ListAdapter<IVM, RecyclerView.ViewHolder>(SimpleDiffItemCallback()) {
+        ListAdapter<IVM, RecyclerView.ViewHolder>(SimpleDiffItemCallback()) {
 
     /**
      * The data binding variable id on which each item will be bound on the [ViewDataBinding]

@@ -2,9 +2,9 @@ package ro.tasegula.exchange.ui
 
 import android.view.View
 import io.reactivex.android.schedulers.AndroidSchedulers
-import ro.tasegula.exchange.arch.ObservableViewModel
-import ro.tasegula.exchange.arch.list.ItemViewModel
 import ro.tasegula.exchange.core.StringResources
+import ro.tasegula.exchange.core.arch.ObservableViewModel
+import ro.tasegula.exchange.core.arch.list.ItemViewModel
 import ro.tasegula.exchange.data.Currency
 import ro.tasegula.exchange.data.ExchangeRate
 import ro.tasegula.exchange.data.ExchangeRepository

@@ -24,6 +24,9 @@ class ExchangeRepository
 
     }
 
+    /**
+     * @return an [Observable] of the list of [ExchangeRate] that never fails
+     */
     fun ratesDb(): Observable<List<ExchangeRate>> =
             exchangeDao.loadAll()
                     .distinctUntilChanged()

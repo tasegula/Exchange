@@ -24,13 +24,9 @@ class ExchangeViewModel
     init {
         repository.ratesDb()
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
-                    baseRate = it.first()
-                    makeList(it)
-                },
-                {
-                })
+            .subscribe {
+                makeList(it)
+            }
             .neverDispose()
     }
 

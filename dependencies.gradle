@@ -98,4 +98,31 @@ ext {
 
     // Timber
     timber = "com.jakewharton.timber:timber:4.7.1"
+
+    // ------------------------------------------------- //
+    // TESTING                                           //
+    // ------------------------------------------------- //
+
+    test_androidVersion = '1.1.1'
+    test_espressoVersion = '3.1.1'
+    test_mockitoVersion = '2.24.5'
+    test = [
+            rules      : "androidx.test:rules:$test_androidVersion",
+            runner     : "androidx.test:runner:$test_androidVersion",
+            ext_junit  : "androidx.test.ext:junit:1.1.0",
+            uiautomator: "androidx.test.uiautomator:uiautomator:2.2.0",
+            dexopener  : "com.github.tmurakami:dexopener:2.0.1",
+
+            espresso   : [
+                    core   : "androidx.test.espresso:espresso-core:$test_espressoVersion",
+                    contrib: "androidx.test.espresso:espresso-contrib:$test_espressoVersion",
+            ],
+
+            mockito    : [
+                    core   : "org.mockito:mockito-core:$test_mockitoVersion",
+                    android: "org.mockito:mockito-android:$test_mockitoVersion",
+            ],
+
+            junit      : "junit:junit:4.12"
+    ]
 }

@@ -10,7 +10,10 @@ import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
-class AppModule(private val application: Application) {
+class AppModule(application: Application) : BaseAppModule(application)
+
+@Module
+open class BaseAppModule(private val application: Application) {
 
     @Provides
     @Named("ApplicationContext")

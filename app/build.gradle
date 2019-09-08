@@ -13,7 +13,9 @@ android {
 
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        testInstrumentationRunner "ro.tasegula.exchange.TestRunner"
+        testInstrumentationRunnerArguments clearPackageData: 'true'
     }
 
     buildTypes {
@@ -74,8 +76,23 @@ dependencies {
     // Debug
     implementation timber
 
-    // Test - maybe?
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    // ------------------------------------------------- //
+    // TESTING                                           //
+    // ------------------------------------------------- //
+    kaptAndroidTest dagger.compiler
+
+    androidTestImplementation test.rules
+    androidTestImplementation test.runner
+    androidTestImplementation test.uiautomator
+    androidTestImplementation test.ext_junit
+    androidTestImplementation test.dexopener
+
+    androidTestImplementation test.espresso.core
+    androidTestImplementation test.espresso.contrib
+
+    // Mockito
+    testImplementation test.mockito.core
+    androidTestImplementation test.mockito.android
+
+    testImplementation test.junit
 }

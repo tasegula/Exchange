@@ -1,6 +1,7 @@
 package ro.tasegula.exchange
 
 import android.app.Activity
+import androidx.annotation.VisibleForTesting
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
@@ -10,7 +11,8 @@ import ro.tasegula.exchange.core.injection.DaggerAppComponent
 import timber.log.Timber
 import javax.inject.Inject
 
-class Application : android.app.Application(), HasActivityInjector {
+@VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+open class Application : android.app.Application(), HasActivityInjector {
 
     @Inject
     lateinit var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
@@ -27,11 +29,15 @@ class Application : android.app.Application(), HasActivityInjector {
                             super.createStackElementTag(element)
                 }
             })
+        initDagger()
+    }
 
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    protected open fun initDagger() {
         val appComponent: AppComponent =
-                DaggerAppComponent.builder()
-                        .appModule(AppModule(this))
-                        .build()
+            DaggerAppComponent.builder()
+                .appModule(AppModule(this))
+                .build()
         appComponent.inject(this)
     }
 }

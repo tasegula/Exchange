@@ -12,8 +12,10 @@ import ro.tasegula.exchange.utils.neverDispose
 import javax.inject.Inject
 
 class ExchangeViewModel
-@Inject constructor(private val stringResources: StringResources,
-                    repository: ExchangeRepository) : ObservableViewModel() {
+@Inject constructor(
+    private val stringResources: StringResources,
+    repository: ExchangeRepository
+) : ObservableViewModel() {
 
     private var rates: List<ExchangeRate> = listOf()
     private var baseRate: ExchangeRate = ExchangeRate(Currency.EUR, 1.0)
@@ -21,14 +23,14 @@ class ExchangeViewModel
 
     init {
         repository.ratesDb()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        {
-                            baseRate = it.first()
-                            makeList(it)
-                        },
-                        {
-                        })
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    baseRate = it.first()
+                    makeList(it)
+                },
+                {
+                })
             .neverDispose()
     }
 
@@ -38,12 +40,12 @@ class ExchangeViewModel
         rates = list
 
         val result: List<RateItemViewModel> =
-                rates.map { getItemViewModel(it.currency, it.amount * baseRate.amount) }
+            rates.map { getItemViewModel(it.currency, it.amount * baseRate.amount) }
         adapter.submitList(result)
     }
 
     private fun getItemViewModel(currency: Currency, value: Double): RateItemViewModel =
-            RateItemViewModel(stringResources, currency, value, this::update, this::updateCurrency)
+        RateItemViewModel(stringResources, currency, value, this::update, this::updateCurrency)
 
     private fun update(currency: Currency, from: Double, to: Double) {
         if (exchangeCurrency != currency) return
@@ -58,11 +60,13 @@ class ExchangeViewModel
     }
 }
 
-class RateItemViewModel(stringResources: StringResources,
-                        val currency: Currency,
-                        private val rate: Double,
-                        private val update: (currency: Currency, from: Double, to: Double) -> Unit,
-                        private val updateCurrency: (Currency) -> Unit) : ItemViewModel {
+class RateItemViewModel(
+    stringResources: StringResources,
+    val currency: Currency,
+    private val rate: Double,
+    private val update: (currency: Currency, from: Double, to: Double) -> Unit,
+    private val updateCurrency: (Currency) -> Unit
+) : ItemViewModel {
 
     val icon: Int = currency.icon
     val name: String = currency.name
@@ -84,8 +88,8 @@ class RateItemViewModel(stringResources: StringResources,
     }
 
     override fun isSameItemAs(other: ItemViewModel): Boolean =
-            other is RateItemViewModel && this.currency == other.currency
+        other is RateItemViewModel && this.currency == other.currency
 
     override fun isSameContentAs(other: ItemViewModel): Boolean =
-            other is RateItemViewModel && this.amount == other.amount
+        other is RateItemViewModel && this.amount == other.amount
 }

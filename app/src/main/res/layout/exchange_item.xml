@@ -12,10 +12,10 @@
             android:id="@+id/icon"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@{viewModel.icon}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@{viewModel.icon}" />
 
         <TextView
             android:id="@+id/description"
@@ -61,8 +61,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:inputType="number"
-                app:onFocusChangeListener="@{viewModel.onFocusChangeListener}"
                 android:text="@={viewModel.amount}"
+                app:onFocusChangeListener="@{viewModel.onFocusChangeListener}"
                 tools:text="1234.56" />
         </com.google.android.material.textfield.TextInputLayout>
 

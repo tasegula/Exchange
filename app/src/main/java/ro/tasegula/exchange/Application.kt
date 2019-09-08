@@ -7,6 +7,7 @@ import dagger.android.HasActivityInjector
 import ro.tasegula.exchange.core.injection.AppComponent
 import ro.tasegula.exchange.core.injection.AppModule
 import ro.tasegula.exchange.core.injection.DaggerAppComponent
+import timber.log.Timber
 import javax.inject.Inject
 
 class Application : android.app.Application(), HasActivityInjector {
@@ -18,6 +19,14 @@ class Application : android.app.Application(), HasActivityInjector {
 
     override fun onCreate() {
         super.onCreate()
+
+        if (BuildConfig.DEBUG)
+            Timber.plant(object : Timber.DebugTree() {
+                override fun createStackElementTag(element: StackTraceElement): String? {
+                    return Thread.currentThread().name + '/'.toString() +
+                            super.createStackElementTag(element)
+                }
+            })
 
         val appComponent: AppComponent =
                 DaggerAppComponent.builder()

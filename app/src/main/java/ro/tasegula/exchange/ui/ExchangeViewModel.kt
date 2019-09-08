@@ -72,7 +72,7 @@ class RateItemViewModel(
         set(value) {
             if (field == value)
                 return
-            update(currency, rate, value.toDouble())
+            update(currency, rate, value.toDoubleOrNull() ?: 0.0)
             field = value
         }
 

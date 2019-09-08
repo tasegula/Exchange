@@ -6,6 +6,7 @@ import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.databinding.BindingAdapter
 
+
 @BindingAdapter("onFocusChangeListener")
 fun onFocusChangeListener(view: View, listener: View.OnFocusChangeListener) {
     view.onFocusChangeListener = listener

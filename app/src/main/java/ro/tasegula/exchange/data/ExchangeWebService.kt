@@ -25,11 +25,11 @@ class ExchangeWebService
                 .create(Api::class.java)
     }
 
-    fun getRates(currency: Currency): Single<ExchangeRate> = api.getRates(currency.name)
+    fun getRates(currency: Currency): Single<ExchangeBase> = api.getRates(currency.name)
 
     interface Api {
         @GET("latest")
-        fun getRates(@Query("base") base: String): Single<ExchangeRate>
+        fun getRates(@Query("base") base: String): Single<ExchangeBase>
     }
 
     companion object {

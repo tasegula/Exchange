@@ -15,7 +15,6 @@ class ExchangeRepository
      *
      * @return the list of exchange rates for the given currency
      */
-    fun getRates(currency: Currency): Single<ExchangeRate> =
-            webService.getRates(currency).subscribeOn(Schedulers.io())
-
+    fun getRates(currency: Currency): Single<List<ExchangeRate>> =
+            webService.getRates(currency).map { it.rates }.subscribeOn(Schedulers.io())
 }

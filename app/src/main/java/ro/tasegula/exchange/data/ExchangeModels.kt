@@ -1,55 +1,109 @@
 package ro.tasegula.exchange.data
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.Keep
 import androidx.annotation.StringRes
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
 import com.google.gson.annotations.SerializedName
 import ro.tasegula.exchange.R
+import ro.tasegula.exchange.core.db.EnumTypeConverter
 
-data class ExchangeRate(@SerializedName("base")
-                        val base: String,
-                        @SerializedName("date")
+data class ExchangeBase(@field:SerializedName("base")
+                        val base: Currency,
+                        @field:SerializedName("date")
                         val date: String,
-                        @SerializedName("rates")
-                        val map: Map<String, Double>) {
+                        @field:SerializedName("rates")
+                        val map: Map<Currency, Double>) {
 
-    val rates: Map<Currency, Double>
-        get() = map.mapKeys { Currency.valueOf(it.key) }
+    private inline val baseExchangeRate: ExchangeRate
+        get() = ExchangeRate(base, 1.0)
+
+    private inline val mapExchangeRates: List<ExchangeRate>
+        get() = map.map { ExchangeRate(it.key, it.value) }.sortedBy { it.currency }
+
+    val rates: List<ExchangeRate>
+        get() = listOf(baseExchangeRate).plus(mapExchangeRates)
+
 }
+
+@Keep
+@Entity
+@TypeConverters(Currency.Converter::class)
+data class ExchangeRate(@PrimaryKey
+                        val currency: Currency,
+                        val amount: Double)
 
 enum class Currency(@DrawableRes val icon: Int,
                     @StringRes val description: Int) {
 
+    @SerializedName("EUR")
     EUR(R.drawable.ic_launcher_foreground, R.string.currency_EUR_description),
+    @SerializedName("AUD")
     AUD(R.drawable.ic_launcher_foreground, R.string.currency_AUD_description),
+    @SerializedName("BGN")
     BGN(R.drawable.ic_launcher_foreground, R.string.currency_BGN_description),
+    @SerializedName("BRL")
     BRL(R.drawable.ic_launcher_foreground, R.string.currency_BRL_description),
+    @SerializedName("CAD")
     CAD(R.drawable.ic_launcher_foreground, R.string.currency_CAD_description),
+    @SerializedName("CHF")
     CHF(R.drawable.ic_launcher_foreground, R.string.currency_CHF_description),
+    @SerializedName("CNY")
     CNY(R.drawable.ic_launcher_foreground, R.string.currency_CNY_description),
+    @SerializedName("CZK")
     CZK(R.drawable.ic_launcher_foreground, R.string.currency_CZK_description),
+    @SerializedName("DKK")
     DKK(R.drawable.ic_launcher_foreground, R.string.currency_DKK_description),
+    @SerializedName("GBP")
     GBP(R.drawable.ic_launcher_foreground, R.string.currency_GBP_description),
+    @SerializedName("HKD")
     HKD(R.drawable.ic_launcher_foreground, R.string.currency_HKD_description),
+    @SerializedName("HRK")
     HRK(R.drawable.ic_launcher_foreground, R.string.currency_HRK_description),
+    @SerializedName("HUF")
     HUF(R.drawable.ic_launcher_foreground, R.string.currency_HUF_description),
+    @SerializedName("IDR")
     IDR(R.drawable.ic_launcher_foreground, R.string.currency_IDR_description),
+    @SerializedName("ILS")
     ILS(R.drawable.ic_launcher_foreground, R.string.currency_ILS_description),
+    @SerializedName("INR")
     INR(R.drawable.ic_launcher_foreground, R.string.currency_INR_description),
+    @SerializedName("ISK")
     ISK(R.drawable.ic_launcher_foreground, R.string.currency_ISK_description),
+    @SerializedName("JPY")
     JPY(R.drawable.ic_launcher_foreground, R.string.currency_JPY_description),
+    @SerializedName("KRW")
     KRW(R.drawable.ic_launcher_foreground, R.string.currency_KRW_description),
+    @SerializedName("MXN")
     MXN(R.drawable.ic_launcher_foreground, R.string.currency_MXN_description),
+    @SerializedName("MYR")
     MYR(R.drawable.ic_launcher_foreground, R.string.currency_MYR_description),
+    @SerializedName("NOK")
     NOK(R.drawable.ic_launcher_foreground, R.string.currency_NOK_description),
+    @SerializedName("NZD")
     NZD(R.drawable.ic_launcher_foreground, R.string.currency_NZD_description),
+    @SerializedName("PHP")
     PHP(R.drawable.ic_launcher_foreground, R.string.currency_PHP_description),
+    @SerializedName("PLN")
     PLN(R.drawable.ic_launcher_foreground, R.string.currency_PLN_description),
+    @SerializedName("RON")
     RON(R.drawable.ic_launcher_foreground, R.string.currency_RON_description),
+    @SerializedName("RUB")
     RUB(R.drawable.ic_launcher_foreground, R.string.currency_RUB_description),
+    @SerializedName("SEK")
     SEK(R.drawable.ic_launcher_foreground, R.string.currency_SEK_description),
+    @SerializedName("SGD")
     SGD(R.drawable.ic_launcher_foreground, R.string.currency_SGD_description),
+    @SerializedName("THB")
     THB(R.drawable.ic_launcher_foreground, R.string.currency_THB_description),
+    @SerializedName("TRY")
     TRY(R.drawable.ic_launcher_foreground, R.string.currency_TRY_description),
+    @SerializedName("USD")
     USD(R.drawable.ic_launcher_foreground, R.string.currency_USD_description),
-    ZAR(R.drawable.ic_launcher_foreground, R.string.currency_ZAR_description),
+    @SerializedName("ZAR")
+    ZAR(R.drawable.ic_launcher_foreground, R.string.currency_ZAR_description);
+
+    class Converter : EnumTypeConverter<Currency>(Currency::class.java)
 }

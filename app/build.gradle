@@ -42,6 +42,10 @@ dependencies {
     implementation androidx.arch.core
     implementation androidx.arch.runtime
 
+    implementation androidx.room.runtime
+    implementation androidx.room.rx
+    kapt androidx.room.compiler
+
     // Google
     implementation google.design
 

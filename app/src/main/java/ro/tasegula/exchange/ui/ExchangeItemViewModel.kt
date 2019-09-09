@@ -35,23 +35,23 @@ class ExchangeItemViewModel(stringResources: StringResources,
         set(value) {
             if (_amountText == value) return
 
-            commands.updateAmount(currency, amount, value.toFloatOrNull() ?: 0f)
+            commands.updateAmount(currency, value.toFloatOrNull() ?: 0f)
             _amountText = value
         }
 
     val onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
         if (hasFocus)
-            commands.updateCurrency(currency)
+            commands.updateCurrency(currency, amount)
     }
 
     override fun isSameItemAs(other: ItemViewModel): Boolean =
-            other is ExchangeItemViewModel && this.currency == other.currency
+        other is ExchangeItemViewModel && this.currency == other.currency
 
     override fun isSameContentAs(other: ItemViewModel): Boolean =
-            other is ExchangeItemViewModel && this.amount == other.amount
+        other is ExchangeItemViewModel && this.amount == other.amount
 
     interface Commands {
-        fun updateAmount(currency: Currency, from: Float, to: Float)
-        fun updateCurrency(currency: Currency)
+        fun updateAmount(currency: Currency, amount: Float)
+        fun updateCurrency(currency: Currency, amount: Float)
     }
 }

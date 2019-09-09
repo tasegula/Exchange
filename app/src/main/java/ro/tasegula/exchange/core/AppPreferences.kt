@@ -24,9 +24,9 @@ class AppPreferences
         }
 
     private var baseAmount: Float
-        get() = preferences.getFloat(BASE_AMOUNT, 0f)
+        get() = preferences.getFloat(BASE_AMOUNT, 1f)
         set(value) {
-            preferences.edit().putFloat(BASE_CURRENCY, value).apply()
+            preferences.edit().putFloat(BASE_AMOUNT, value).apply()
         }
 
     companion object {

@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class ExchangeViewModel
 @Inject constructor(private val stringResources: StringResources,
-                    repository: ExchangeRepository)
+                    private val repository: ExchangeRepository)
     : ObservableViewModel(), ExchangeItemViewModel.Commands {
 
     /**
@@ -34,7 +34,8 @@ class ExchangeViewModel
     /**
      * The base currency for all rates and the associated amount.
      */
-    private var baseRate: ExchangeRate = ExchangeRate(Currency.EUR, 1f)
+    private val baseRate: ExchangeRate
+        get() = repository.baseRate
 
     /**
      * The currency currently selected
@@ -59,22 +60,22 @@ class ExchangeViewModel
             val ratesMap: Map<Currency, Float> = list.map { it.currency to it.amount }.toMap()
 
             ratesVM.forEach { vm ->
-                val x = (ratesMap[vm.currency] ?: 0f) * baseRate.amount
+                val amount = (ratesMap[vm.currency] ?: 0f) * baseRate.amount
                 if (vm.currency == Currency.AUD) {
                     Timber.d(
                         "update from %s to %s (map: %s, base: %s)",
-                        vm.amount, x,
-                        ratesMap[vm.currency], baseRate.amount
+                        vm.amount, amount,
+                        ratesMap[vm.currency], baseRate
                     )
                 }
-                vm.amount = x
+                vm.amount = amount
             }
         }
         // new list
         else {
             rates = list
             currencies = rates.map { it.currency }
-            ratesVM = rates.map { getItemViewModel(it.currency, it.amount) }
+            ratesVM = rates.map { getItemViewModel(it.currency, it.amount * baseRate.amount) }
             adapter.submitList(ratesVM)
         }
 
@@ -84,15 +85,16 @@ class ExchangeViewModel
         ExchangeItemViewModel(stringResources, currency, value, this)
 
     // region IVM Commands
-    override fun updateAmount(currency: Currency, from: Float, to: Float) {
+    override fun updateAmount(currency: Currency, amount: Float) {
         if (exchangeCurrency != currency) return
-
-        baseRate = baseRate.copy(amount = baseRate.amount * to / from)
-        generateList(rates)
+        repository.baseRate = ExchangeRate(currency, amount)
     }
 
-    override fun updateCurrency(currency: Currency) {
+    override fun updateCurrency(currency: Currency, amount: Float) {
+        if (exchangeCurrency == currency) return
         exchangeCurrency = currency
+        repository.baseRate = ExchangeRate(currency, amount)
+
         ratesVM = ratesVM.sortedBy { if (it.currency == currency) "" else it.currency.name }
         adapter.submitList(ratesVM)
     }

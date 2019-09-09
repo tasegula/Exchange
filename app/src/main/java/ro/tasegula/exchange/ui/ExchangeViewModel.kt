@@ -1,6 +1,9 @@
 package ro.tasegula.exchange.ui
 
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.Subject
 import ro.tasegula.exchange.core.StringResources
 import ro.tasegula.exchange.core.arch.ObservableViewModel
 import ro.tasegula.exchange.data.Currency
@@ -12,16 +15,48 @@ import javax.inject.Inject
 
 class ExchangeViewModel
 @Inject constructor(private val stringResources: StringResources,
-                    repository: ExchangeRepository) : ObservableViewModel() {
+                    repository: ExchangeRepository)
+    : ObservableViewModel(), ExchangeItemViewModel.Commands {
 
+    /**
+     * [Subject] of UI commands.
+     */
+    private val _commands: Subject<Commands>
+    val commands: Observable<Commands>
+        get() = _commands.hide()
+
+    /**
+     * All available currencies.
+     */
     private var currencies: List<Currency> = listOf()
+
+    /**
+     * All available exchange rates.
+     * [currencies] is a list of this rates' currencies.
+     */
     private var rates: List<ExchangeRate> = listOf()
+
+    /**
+     * List of [ExchangeItemViewModel] that are shown in the screen.
+     */
     private var ratesVM: List<ExchangeItemViewModel> = listOf()
 
+    /**
+     * The base currency for all rates and the associated amount.
+     */
     private var baseRate: ExchangeRate = ExchangeRate(Currency.EUR, 1.0)
+
+    /**
+     * The currency currently selected
+     */
     private var exchangeCurrency: Currency = Currency.EUR
 
+
+    val adapter: ExchangeAdapter = ExchangeAdapter()
+
     init {
+        _commands = BehaviorSubject.create()
+
         repository.ratesDb()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
@@ -29,8 +64,6 @@ class ExchangeViewModel
                 }
                 .neverDispose()
     }
-
-    val adapter: ExchangeAdapter = ExchangeAdapter()
 
     private fun generateList(list: List<ExchangeRate>) {
         // same list, just updateAmount values
@@ -40,9 +73,11 @@ class ExchangeViewModel
             ratesVM.forEach { vm ->
                 val x = (ratesMap[vm.currency] ?: 0.0) * baseRate.amount
                 if (vm.currency == Currency.AUD) {
-                    Timber.d("update from %s to %s (map: %s, base: %s)",
+                    Timber.d(
+                            "update from %s to %s (map: %s, base: %s)",
                             vm.amount, x,
-                            ratesMap[vm.currency], baseRate.amount)
+                            ratesMap[vm.currency], baseRate.amount
+                    )
                 }
                 vm.amount = x
             }
@@ -58,19 +93,28 @@ class ExchangeViewModel
     }
 
     private fun getItemViewModel(currency: Currency, value: Double): ExchangeItemViewModel =
-            ExchangeItemViewModel(stringResources, currency, value, this::updateAmount, this::updateCurrency)
+            ExchangeItemViewModel(stringResources, currency, value, this)
 
-    private fun updateAmount(currency: Currency, from: Double, to: Double) {
+    // region IVM Commands
+    override fun updateAmount(currency: Currency, from: Double, to: Double) {
         if (exchangeCurrency != currency) return
 
         baseRate = baseRate.copy(amount = baseRate.amount * to / from)
         generateList(rates)
     }
 
-    private fun updateCurrency(currency: Currency) {
-        exchangeCurrency = currency
-        ratesVM = ratesVM.sortedBy { if (it.currency == currency) "" else it.currency.name }
-        adapter.submitList(ratesVM)
+    override fun updateCurrency(currency: Currency, hasFocus: Boolean) {
+        if (hasFocus) {
+            exchangeCurrency = currency
+            ratesVM = ratesVM.sortedBy { if (it.currency == currency) "" else it.currency.name }
+            adapter.submitList(ratesVM)
+        } else {
+
+        }
+    }
+    // endregion
+
+    sealed class Commands {
+        data class ChangeFocus(val hasFocus: Boolean) : Commands()
     }
 }
-

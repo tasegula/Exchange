@@ -18,6 +18,21 @@ class ExchangeActivity : ObservableActivity<ExchangeViewModel, ExchangeScreenBin
         AndroidInjection.inject(this)
         setup(R.layout.exchange_screen, BR.viewModel, viewModelProvider::get)
         super.onCreate(savedInstanceState)
+
+        viewModel.commands
+                .subscribe { command ->
+                    when (command) {
+                        is ExchangeViewModel.Commands.ChangeFocus ->
+                            changeFocus(command.hasFocus)
+                    }
+                }
+                .disposeOnStop()
     }
+
+    // region VM Commands
+    private fun changeFocus(hasFocus: Boolean) {
+
+    }
+    // endregion
 }
 

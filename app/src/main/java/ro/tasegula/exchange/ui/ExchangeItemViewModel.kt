@@ -11,8 +11,7 @@ import ro.tasegula.exchange.data.Currency
 class ExchangeItemViewModel(stringResources: StringResources,
                             val currency: Currency,
                             _amount: Double,
-                            private val updateAmount: (currency: Currency, from: Double, to: Double) -> Unit,
-                            private val updateCurrency: (Currency) -> Unit)
+                            private val commands: Commands)
     : BaseObservable(), ItemViewModel {
 
     val icon: Int = currency.icon
@@ -36,13 +35,12 @@ class ExchangeItemViewModel(stringResources: StringResources,
         set(value) {
             if (_amountText == value) return
 
-            updateAmount(currency, amount, value.toDoubleOrNull() ?: 0.0)
+            commands.updateAmount(currency, amount, value.toDoubleOrNull() ?: 0.0)
             _amountText = value
         }
 
     val onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
-        if (hasFocus)
-            updateCurrency(currency)
+        commands.updateCurrency(currency, hasFocus)
     }
 
     override fun isSameItemAs(other: ItemViewModel): Boolean =
@@ -53,6 +51,6 @@ class ExchangeItemViewModel(stringResources: StringResources,
 
     interface Commands {
         fun updateAmount(currency: Currency, from: Double, to: Double)
-        fun setFocus(currency: Currency)
+        fun updateCurrency(currency: Currency, hasFocus: Boolean)
     }
 }

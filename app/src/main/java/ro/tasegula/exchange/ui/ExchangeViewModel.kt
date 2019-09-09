@@ -34,7 +34,7 @@ class ExchangeViewModel
     /**
      * The base currency for all rates and the associated amount.
      */
-    private var baseRate: ExchangeRate = ExchangeRate(Currency.EUR, 1.0)
+    private var baseRate: ExchangeRate = ExchangeRate(Currency.EUR, 1f)
 
     /**
      * The currency currently selected
@@ -46,25 +46,25 @@ class ExchangeViewModel
 
     init {
         repository.ratesDb()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    generateList(it)
-                }
-                .neverDispose()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                generateList(it)
+            }
+            .neverDispose()
     }
 
     private fun generateList(list: List<ExchangeRate>) {
         // same list, just updateAmount values
         if (list.map { it.currency }.minus(currencies).isEmpty()) {
-            val ratesMap: Map<Currency, Double> = list.map { it.currency to it.amount }.toMap()
+            val ratesMap: Map<Currency, Float> = list.map { it.currency to it.amount }.toMap()
 
             ratesVM.forEach { vm ->
-                val x = (ratesMap[vm.currency] ?: 0.0) * baseRate.amount
+                val x = (ratesMap[vm.currency] ?: 0f) * baseRate.amount
                 if (vm.currency == Currency.AUD) {
                     Timber.d(
-                            "update from %s to %s (map: %s, base: %s)",
-                            vm.amount, x,
-                            ratesMap[vm.currency], baseRate.amount
+                        "update from %s to %s (map: %s, base: %s)",
+                        vm.amount, x,
+                        ratesMap[vm.currency], baseRate.amount
                     )
                 }
                 vm.amount = x
@@ -74,17 +74,17 @@ class ExchangeViewModel
         else {
             rates = list
             currencies = rates.map { it.currency }
-            ratesVM = rates.map { getItemViewModel(it.currency, it.amount * baseRate.amount) }
+            ratesVM = rates.map { getItemViewModel(it.currency, it.amount) }
             adapter.submitList(ratesVM)
         }
 
     }
 
-    private fun getItemViewModel(currency: Currency, value: Double): ExchangeItemViewModel =
-            ExchangeItemViewModel(stringResources, currency, value, this)
+    private fun getItemViewModel(currency: Currency, value: Float): ExchangeItemViewModel =
+        ExchangeItemViewModel(stringResources, currency, value, this)
 
     // region IVM Commands
-    override fun updateAmount(currency: Currency, from: Double, to: Double) {
+    override fun updateAmount(currency: Currency, from: Float, to: Float) {
         if (exchangeCurrency != currency) return
 
         baseRate = baseRate.copy(amount = baseRate.amount * to / from)

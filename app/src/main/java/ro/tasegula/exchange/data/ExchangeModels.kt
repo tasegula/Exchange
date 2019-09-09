@@ -15,10 +15,10 @@ data class ExchangeBase(@field:SerializedName("base")
                         @field:SerializedName("date")
                         val date: String,
                         @field:SerializedName("rates")
-                        val map: Map<Currency, Double>) {
+                        val map: Map<Currency, Float>) {
 
     private inline val baseExchangeRate: ExchangeRate
-        get() = ExchangeRate(base, 1.0)
+        get() = ExchangeRate(base, 1f)
 
     private inline val mapExchangeRates: List<ExchangeRate>
         get() = map.map { ExchangeRate(it.key, it.value) }.sortedBy { it.currency }
@@ -33,7 +33,7 @@ data class ExchangeBase(@field:SerializedName("base")
 @TypeConverters(Currency.Converter::class)
 data class ExchangeRate(@PrimaryKey
                         val currency: Currency,
-                        val amount: Double)
+                        val amount: Float)
 
 enum class Currency(@DrawableRes val icon: Int,
                     @StringRes val description: Int) {
@@ -106,4 +106,14 @@ enum class Currency(@DrawableRes val icon: Int,
     ZAR(R.drawable.ic_currency_zar, R.string.currency_ZAR_description);
 
     class Converter : EnumTypeConverter<Currency>(Currency::class.java)
+
+    companion object {
+        fun from(name: String, default: Currency = EUR): Currency {
+            return try {
+                valueOf(name)
+            } catch (e: Exception) {
+                default
+            }
+        }
+    }
 }

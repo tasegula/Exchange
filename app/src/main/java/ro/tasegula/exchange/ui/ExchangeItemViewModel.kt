@@ -10,7 +10,7 @@ import ro.tasegula.exchange.data.Currency
 
 class ExchangeItemViewModel(stringResources: StringResources,
                             val currency: Currency,
-                            _amount: Double,
+                            _amount: Float,
                             private val commands: Commands)
     : BaseObservable(), ItemViewModel {
 
@@ -18,7 +18,7 @@ class ExchangeItemViewModel(stringResources: StringResources,
     val name: String = currency.name
     val description: String = stringResources.getString(currency.description)
 
-    var amount: Double = _amount
+    var amount: Float = _amount
         set(value) {
             if (field == value) return
             field = value
@@ -35,7 +35,7 @@ class ExchangeItemViewModel(stringResources: StringResources,
         set(value) {
             if (_amountText == value) return
 
-            commands.updateAmount(currency, amount, value.toDoubleOrNull() ?: 0.0)
+            commands.updateAmount(currency, amount, value.toFloatOrNull() ?: 0f)
             _amountText = value
         }
 
@@ -51,7 +51,7 @@ class ExchangeItemViewModel(stringResources: StringResources,
             other is ExchangeItemViewModel && this.amount == other.amount
 
     interface Commands {
-        fun updateAmount(currency: Currency, from: Double, to: Double)
+        fun updateAmount(currency: Currency, from: Float, to: Float)
         fun updateCurrency(currency: Currency)
     }
 }

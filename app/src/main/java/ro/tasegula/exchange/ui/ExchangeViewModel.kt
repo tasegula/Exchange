@@ -1,9 +1,6 @@
 package ro.tasegula.exchange.ui
 
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.Subject
 import ro.tasegula.exchange.core.StringResources
 import ro.tasegula.exchange.core.arch.ObservableViewModel
 import ro.tasegula.exchange.data.Currency
@@ -17,13 +14,6 @@ class ExchangeViewModel
 @Inject constructor(private val stringResources: StringResources,
                     repository: ExchangeRepository)
     : ObservableViewModel(), ExchangeItemViewModel.Commands {
-
-    /**
-     * [Subject] of UI commands.
-     */
-    private val _commands: Subject<Commands>
-    val commands: Observable<Commands>
-        get() = _commands.hide()
 
     /**
      * All available currencies.
@@ -55,8 +45,6 @@ class ExchangeViewModel
     val adapter: ExchangeAdapter = ExchangeAdapter()
 
     init {
-        _commands = BehaviorSubject.create()
-
         repository.ratesDb()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
@@ -103,18 +91,10 @@ class ExchangeViewModel
         generateList(rates)
     }
 
-    override fun updateCurrency(currency: Currency, hasFocus: Boolean) {
-        if (hasFocus) {
-            exchangeCurrency = currency
-            ratesVM = ratesVM.sortedBy { if (it.currency == currency) "" else it.currency.name }
-            adapter.submitList(ratesVM)
-        } else {
-
-        }
+    override fun updateCurrency(currency: Currency) {
+        exchangeCurrency = currency
+        ratesVM = ratesVM.sortedBy { if (it.currency == currency) "" else it.currency.name }
+        adapter.submitList(ratesVM)
     }
     // endregion
-
-    sealed class Commands {
-        data class ChangeFocus(val hasFocus: Boolean) : Commands()
-    }
 }

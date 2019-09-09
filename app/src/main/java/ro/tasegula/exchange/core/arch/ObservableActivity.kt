@@ -31,7 +31,6 @@ abstract class ObservableActivity<VM : ObservableViewModel, B : ViewDataBinding>
     protected lateinit var viewModel: VM
     protected lateinit var binding: B
 
-
     protected fun setup(@LayoutRes bindingLayoutId: Int,
                         @IdRes viewModelBindingVariableId: Int,
                         viewModelCreator: () -> VM) {
@@ -44,8 +43,7 @@ abstract class ObservableActivity<VM : ObservableViewModel, B : ViewDataBinding>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val dataBinding: B = DataBindingUtil.setContentView(this, bindingLayoutId)
-
-        dataBinding.setVariable(viewModelBindingVariableId, viewModel)
+        binding = DataBindingUtil.setContentView(this, bindingLayoutId)
+        binding.setVariable(viewModelBindingVariableId, viewModel)
     }
 }

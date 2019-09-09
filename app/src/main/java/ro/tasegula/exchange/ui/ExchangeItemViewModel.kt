@@ -40,7 +40,8 @@ class ExchangeItemViewModel(stringResources: StringResources,
         }
 
     val onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
-        commands.updateCurrency(currency, hasFocus)
+        if (hasFocus)
+            commands.updateCurrency(currency)
     }
 
     override fun isSameItemAs(other: ItemViewModel): Boolean =
@@ -51,6 +52,6 @@ class ExchangeItemViewModel(stringResources: StringResources,
 
     interface Commands {
         fun updateAmount(currency: Currency, from: Double, to: Double)
-        fun updateCurrency(currency: Currency, hasFocus: Boolean)
+        fun updateCurrency(currency: Currency)
     }
 }

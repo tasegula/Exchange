@@ -1,6 +1,7 @@
 package ro.tasegula.exchange.core.injection
 
 import android.content.Context
+import android.content.SharedPreferences
 import dagger.Module
 import dagger.Provides
 import ro.tasegula.exchange.Application
@@ -29,5 +30,15 @@ open class BaseAppModule(private val application: Application) {
 
     @Provides
     @Singleton
+    fun provideSharedPreferences(@Named("ApplicationContext") context: Context): SharedPreferences {
+        return context.getSharedPreferences(APP_PREFERENCES_FILENAME, Context.MODE_PRIVATE)
+    }
+
+    @Provides
+    @Singleton
     fun provideExchangeDao(database: ExchangeDatabase): ExchangeDao = database.exchangeDao
+
+    companion object {
+        const val APP_PREFERENCES_FILENAME = "ro.tasegula.exchange.preferences.app"
+    }
 }

@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:inputType="number"
-                android:text="@={viewModel.amount}"
+                android:text="@={viewModel.amountText}"
                 app:onFocusChangeListener="@{viewModel.onFocusChangeListener}"
                 tools:text="1234.56" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -69,6 +69,6 @@
 
         <variable
             name="viewModel"
-            type="ro.tasegula.exchange.ui.RateItemViewModel" />
+            type="ro.tasegula.exchange.ui.ExchangeItemViewModel" />
     </data>
 </layout>

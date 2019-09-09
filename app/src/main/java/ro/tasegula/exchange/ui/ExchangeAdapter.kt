@@ -6,7 +6,8 @@ import ro.tasegula.exchange.BR
 import ro.tasegula.exchange.core.arch.list.SimpleAdapter
 import ro.tasegula.exchange.databinding.ExchangeItemBinding
 
-class ExchangeAdapter : SimpleAdapter<RateItemViewModel, ExchangeItemBinding>() {
+class ExchangeAdapter : SimpleAdapter<ExchangeItemViewModel, ExchangeItemBinding>() {
+
     override val itemViewModelBindingVarId: Int
         get() = BR.viewModel
 

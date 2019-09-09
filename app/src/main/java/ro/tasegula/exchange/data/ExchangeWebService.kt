@@ -18,18 +18,31 @@ class ExchangeWebService
 
     init {
         api = Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create(Gson()))
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build()
-                .create(Api::class.java)
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create(Gson()))
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build()
+            .create(Api::class.java)
     }
 
-    fun getRates(currency: Currency): Single<ExchangeBase> = api.getRates(currency.name)
+    /**
+     * @return the [ExchangeBase] with a list that contains [ExchangeRate]
+     * according to the given amount
+     */
+    fun getRates(rate: ExchangeRate): Single<ExchangeBase> =
+        api.getRates(rate.currency.name, rate.amount)
+
+    /**
+     * @return the [ExchangeBase] with a list that contains [ExchangeRate]
+     * as if the amount is 1.00
+     */
+    fun getRates(currency: Currency): Single<ExchangeBase> =
+        api.getRates(currency.name)
 
     interface Api {
         @GET("latest")
-        fun getRates(@Query("base") base: String): Single<ExchangeBase>
+        fun getRates(@Query("base") base: String,
+                     @Query("amount") amount: Float? = null): Single<ExchangeBase>
     }
 
     companion object {

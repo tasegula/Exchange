@@ -11,8 +11,7 @@ import ro.tasegula.exchange.data.Currency
 class ExchangeItemViewModel(stringResources: StringResources,
                             val currency: Currency,
                             _amount: Float,
-                            private val commands: Commands)
-    : BaseObservable(), ItemViewModel {
+                            private val commands: Commands) : BaseObservable(), ItemViewModel {
 
     val icon: Int = currency.icon
     val name: String = currency.name
@@ -23,8 +22,10 @@ class ExchangeItemViewModel(stringResources: StringResources,
             if (field == value) return
             field = value
 
-            _amountText = field.formatted()
-            notifyPropertyChanged(BR.amountText)
+            if (!hasFocus) {
+                _amountText = field.formatted()
+                notifyPropertyChanged(BR.amountText)
+            }
         }
 
     private var _amountText: String = amount.formatted()
@@ -39,7 +40,9 @@ class ExchangeItemViewModel(stringResources: StringResources,
             _amountText = value
         }
 
+    private var hasFocus: Boolean = false
     val onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+        this.hasFocus = hasFocus
         if (hasFocus)
             commands.updateCurrency(currency, amount)
     }

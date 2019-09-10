@@ -11,12 +11,12 @@ open class ObservableViewModel : ViewModel(), Observable {
     private val callbacks: PropertyChangeRegistry = PropertyChangeRegistry()
 
     override fun addOnPropertyChangedCallback(
-            callback: Observable.OnPropertyChangedCallback) {
+        callback: Observable.OnPropertyChangedCallback) {
         callbacks.add(callback)
     }
 
     override fun removeOnPropertyChangedCallback(
-            callback: Observable.OnPropertyChangedCallback) {
+        callback: Observable.OnPropertyChangedCallback) {
         callbacks.remove(callback)
     }
 

@@ -10,7 +10,7 @@ import ro.tasegula.exchange.data.ExchangeRate
 private const val CURRENT_VERSION = 1
 
 @Database(entities = [ExchangeRate::class],
-        version = CURRENT_VERSION)
+          version = CURRENT_VERSION)
 abstract class ExchangeDatabase : RoomDatabase() {
 
     abstract val exchangeDao: ExchangeDao
@@ -18,8 +18,8 @@ abstract class ExchangeDatabase : RoomDatabase() {
     companion object {
         fun build(context: Context): ExchangeDatabase {
             return Room.databaseBuilder(context, ExchangeDatabase::class.java, "exchange.db")
-                    .fallbackToDestructiveMigration()
-                    .build()
+                .fallbackToDestructiveMigration()
+                .build()
         }
     }
 }

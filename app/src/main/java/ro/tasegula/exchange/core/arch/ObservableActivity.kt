@@ -9,7 +9,8 @@ import androidx.databinding.ViewDataBinding
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
-abstract class ObservableActivity<VM : ObservableViewModel, B : ViewDataBinding> : AppCompatActivity() {
+abstract class ObservableActivity<VM : ObservableViewModel, B : ViewDataBinding>
+    : AppCompatActivity() {
 
     private var compositeDisposable: CompositeDisposable? = null
     fun Disposable.disposeOnStop() {

@@ -11,7 +11,9 @@ class ExchangeAdapter : SimpleAdapter<ExchangeItemViewModel, ExchangeItemBinding
     override val itemViewModelBindingVarId: Int
         get() = BR.viewModel
 
-    override fun inflateView(inflater: LayoutInflater, parent: ViewGroup, viewType: Int): ExchangeItemBinding =
-            ExchangeItemBinding.inflate(inflater, parent, false)
+    override fun inflateView(inflater: LayoutInflater,
+                             parent: ViewGroup,
+                             viewType: Int): ExchangeItemBinding =
+        ExchangeItemBinding.inflate(inflater, parent, false)
 
 }

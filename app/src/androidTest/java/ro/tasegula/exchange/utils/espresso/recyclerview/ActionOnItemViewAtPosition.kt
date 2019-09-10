@@ -24,9 +24,10 @@ fun actionOnItemViewAtPosition(position: Int,
     return ActionOnItemViewAtPositionViewAction(position, viewAction, viewId)
 }
 
-private class ActionOnItemViewAtPositionViewAction(private val position: Int = 0,
-                                                   private val viewAction: ViewAction,
-                                                   @IdRes private val viewId: Int = 0) : ViewAction {
+private class ActionOnItemViewAtPositionViewAction(
+    private val position: Int = 0,
+    private val viewAction: ViewAction,
+    @IdRes private val viewId: Int = 0) : ViewAction {
 
     override fun getDescription(): String {
         return "actionOnItemAtPosition performing ViewAction: ${viewAction.description} on item at position: $position"
@@ -34,7 +35,7 @@ private class ActionOnItemViewAtPositionViewAction(private val position: Int = 0
 
     override fun getConstraints(): Matcher<View> {
         return Matchers.allOf(ViewMatchers.isAssignableFrom(RecyclerView::class.java),
-                ViewMatchers.isDisplayed())
+                              ViewMatchers.isDisplayed())
     }
 
     override fun perform(uiController: UiController, view: View) {
@@ -45,9 +46,9 @@ private class ActionOnItemViewAtPositionViewAction(private val position: Int = 0
         val itemView: View? = recyclerView.layoutManager?.findViewByPosition(position)
         val targetView: View = itemView?.findViewById(viewId)
                 ?: throw PerformException.Builder().withActionDescription(this.toString())
-                        .withViewDescription(HumanReadables.describe(view))
-                        .withCause(IllegalStateException("No view with id $viewId found at position: $position"))
-                        .build()
+                    .withViewDescription(HumanReadables.describe(view))
+                    .withCause(IllegalStateException("No view with id $viewId found at position: $position"))
+                    .build()
 
         viewAction.perform(uiController, targetView)
     }

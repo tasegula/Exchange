@@ -136,8 +136,4 @@ class ExchangeTest : BaseTestSuite() {
         return AppMocks.exchangeWebServiceMock.baseFor(exchangeRate)
     }
     // endregion
-
-    companion object {
-        fun Double.formatted() = "%.2f".format(this)
-    }
 }

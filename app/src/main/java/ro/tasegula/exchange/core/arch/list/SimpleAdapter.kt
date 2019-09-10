@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
 abstract class SimpleAdapter<IVM : ItemViewModel, B : ViewDataBinding> :
-        ListAdapter<IVM, RecyclerView.ViewHolder>(SimpleDiffItemCallback()) {
+    ListAdapter<IVM, RecyclerView.ViewHolder>(SimpleDiffItemCallback()) {
 
     /**
      * The data binding variable id on which each item will be bound on the [ViewDataBinding]
@@ -26,8 +26,8 @@ abstract class SimpleAdapter<IVM : ItemViewModel, B : ViewDataBinding> :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return SimpleViewModelItemViewHolder<IVM, B>(
-                inflateView(LayoutInflater.from(parent.context), parent, viewType),
-                itemViewModelBindingVarId
+            inflateView(LayoutInflater.from(parent.context), parent, viewType),
+            itemViewModelBindingVarId
         )
     }
 

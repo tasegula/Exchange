@@ -12,7 +12,7 @@ class ScrollToPositionViewAction(private val position: Int) : ViewAction {
 
     override fun getConstraints(): Matcher<View> {
         return Matchers.allOf(ViewMatchers.isAssignableFrom(RecyclerView::class.java),
-                ViewMatchers.isDisplayed())
+                              ViewMatchers.isDisplayed())
     }
 
     override fun getDescription(): String {

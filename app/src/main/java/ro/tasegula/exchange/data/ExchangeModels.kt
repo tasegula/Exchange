@@ -38,8 +38,6 @@ data class ExchangeRate(@PrimaryKey
 enum class Currency(@DrawableRes val icon: Int,
                     @StringRes val description: Int) {
 
-    @SerializedName("EUR")
-    EUR(R.drawable.ic_currency_eur, R.string.currency_EUR_description),
     @SerializedName("AUD")
     AUD(R.drawable.ic_currency_aud, R.string.currency_AUD_description),
     @SerializedName("BGN")
@@ -56,6 +54,8 @@ enum class Currency(@DrawableRes val icon: Int,
     CZK(R.drawable.ic_currency_czk, R.string.currency_CZK_description),
     @SerializedName("DKK")
     DKK(R.drawable.ic_currency_dkk, R.string.currency_DKK_description),
+    @SerializedName("EUR")
+    EUR(R.drawable.ic_currency_eur, R.string.currency_EUR_description),
     @SerializedName("GBP")
     GBP(R.drawable.ic_currency_gbp, R.string.currency_GBP_description),
     @SerializedName("HKD")

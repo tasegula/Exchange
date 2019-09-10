@@ -57,7 +57,6 @@ class ExchangeRepository
      */
     fun ratesDb(): Observable<List<ExchangeRate>> =
         exchangeDao.loadAll()
-            .distinctUntilChanged()
             .subscribeOn(Schedulers.computation())
 
     /**

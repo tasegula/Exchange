@@ -7,7 +7,6 @@ import ro.tasegula.exchange.data.Currency
 import ro.tasegula.exchange.data.ExchangeRate
 import ro.tasegula.exchange.data.ExchangeRepository
 import ro.tasegula.exchange.utils.neverDispose
-import timber.log.Timber
 import javax.inject.Inject
 
 class ExchangeViewModel
@@ -60,15 +59,7 @@ class ExchangeViewModel
             val ratesMap: Map<Currency, Float> = list.map { it.currency to it.amount }.toMap()
 
             ratesVM.forEach { vm ->
-                val amount = (ratesMap[vm.currency] ?: 0f) * baseRate.amount
-                if (vm.currency == Currency.AUD) {
-                    Timber.d(
-                        "update from %s to %s (map: %s, base: %s)",
-                        vm.amount, amount,
-                        ratesMap[vm.currency], baseRate
-                    )
-                }
-                vm.amount = amount
+                vm.amount = (ratesMap[vm.currency] ?: 0f) * baseRate.amount
             }
         }
         // new list

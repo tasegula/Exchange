@@ -1,5 +1,6 @@
 package ro.tasegula.exchange
 
+import ro.tasegula.exchange.dagger.TestComponents
 import ro.tasegula.exchange.dagger.DaggerTestAppComponent
 import ro.tasegula.exchange.dagger.TestAppComponent
 import ro.tasegula.exchange.dagger.TestAppModule
@@ -12,6 +13,7 @@ class TestApplication : Application() {
             .testAppModule(TestAppModule(this))
             .build()
 
+        TestComponents.initialize(appComponent)
         appComponent.inject(this)
     }
 }

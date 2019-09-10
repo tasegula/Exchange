@@ -5,6 +5,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.android.AndroidInjectionModule
 import ro.tasegula.exchange.Application
+import ro.tasegula.exchange.core.AppPreferences
 import ro.tasegula.exchange.core.injection.AppActivitiesModule
 import ro.tasegula.exchange.core.injection.AppComponent
 import ro.tasegula.exchange.core.injection.BaseAppModule
@@ -16,6 +17,7 @@ import javax.inject.Singleton
 @Component(modules = [AppActivitiesModule::class, AndroidInjectionModule::class, TestAppModule::class])
 interface TestAppComponent : AppComponent {
 
+    fun appPreferences(): AppPreferences
 }
 
 @Module
